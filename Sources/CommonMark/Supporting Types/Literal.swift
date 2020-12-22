@@ -1,4 +1,4 @@
-import cmark
+import cmark_gfm
 
 /// An element with literal contents.
 public protocol Literal: Node {

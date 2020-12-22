@@ -1,4 +1,4 @@
-import cmark
+import cmark_gfm
 
 /**
  A thematic break.

@@ -1,4 +1,4 @@
-import cmark
+import cmark_gfm
 
 /**
  An HTML block.

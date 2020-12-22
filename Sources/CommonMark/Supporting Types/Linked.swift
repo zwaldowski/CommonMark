@@ -1,4 +1,4 @@
-import cmark
+import cmark_gfm
 
 public protocol Linked: Node {}
 extension Link: Linked {}

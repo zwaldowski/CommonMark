@@ -1,7 +1,7 @@
-import cmark
+import cmark_gfm
 
 struct Children: Sequence {
-    var cmark_node: OpaquePointer
+    var cmark_node: UnsafeMutablePointer<cmark_node>
 
     init(of node: Node) {
         cmark_node = node.cmark_node
@@ -21,13 +21,13 @@ struct Children: Sequence {
 }
 
 struct CMarkNodeChildIterator: IteratorProtocol {
-    var current: OpaquePointer!
+    var current: UnsafeMutablePointer<cmark_node>?
 
-    init(_ node: OpaquePointer!) {
+    init(_ node: UnsafeMutablePointer<cmark_node>?) {
         current = cmark_node_first_child(node)
     }
 
-    mutating func next() -> OpaquePointer? {
+    mutating func next() -> UnsafeMutablePointer<cmark_node>? {
         guard let next = current else { return nil }
         defer { current = cmark_node_next(current) }
         return next

@@ -1,4 +1,4 @@
-import cmark
+import cmark_gfm
 
 /**
  An ordered list.
@@ -30,7 +30,7 @@ public final class List: Node {
         case period(Int = 1)
         case parenthesis(Int = 1)
 
-        init(_ cmark_node: OpaquePointer) {
+        init(_ cmark_node: UnsafeMutablePointer<cmark_node>) {
             switch cmark_node_get_list_delim(cmark_node) {
                 case CMARK_PERIOD_DELIM:
                     self = .period(numericCast(cmark_node_get_list_start(cmark_node)))

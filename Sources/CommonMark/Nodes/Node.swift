@@ -1,11 +1,11 @@
-import cmark
+import cmark_gfm
 
 /// A CommonMark node.
 public class Node: Codable {
     class var cmark_node_type: cmark_node_type { return CMARK_NODE_NONE }
 
     /// A pointer to the underlying `cmark_node` for the node.
-    final let cmark_node: OpaquePointer
+    final let cmark_node: UnsafeMutablePointer<cmark_node>
 
     /// Whether the underlying `cmark_node` should be freed upon deallocation.
     var managed: Bool = false
@@ -15,7 +15,7 @@ public class Node: Codable {
 
      - Parameter cmark_node: A `cmark_node` pointer.
      */
-    required init(_ cmark_node: OpaquePointer) {
+    required init(_ cmark_node: UnsafeMutablePointer<cmark_node>) {
         self.cmark_node = cmark_node
         assert(type(of: self) != Node.self)
         assert(cmark_node_get_type(cmark_node) == type(of: self).cmark_node_type)
@@ -42,7 +42,7 @@ public class Node: Codable {
      - Parameter cmark_node: A `cmark_node` pointer.
      - Returns: An instance of a `Node` subclass.
      */
-    static func create(for cmark_node: OpaquePointer!) -> Node? {
+    static func create(for cmark_node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         guard let cmark_node = cmark_node else { return nil }
 
         switch cmark_node_get_type(cmark_node) {
@@ -198,7 +198,7 @@ public class Node: Codable {
         case .commonmark:
             return String(cString: cmark_render_commonmark(cmark_node, options.rawValue, Int32(clamping: width)))
         case .html:
-            return String(cString: cmark_render_html(cmark_node, options.rawValue))
+            return String(cString: cmark_render_html(cmark_node, options.rawValue, nil))
         case .xml:
             return String(cString: cmark_render_xml(cmark_node, options.rawValue))
         case .latex:
