@@ -286,8 +286,7 @@ extension Node: Equatable {
 
 extension Node: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(cmark_node_get_type(cmark_node).rawValue)
-        hasher.combine(cmark_render_commonmark(cmark_node, 0, 0))
+        hasher.combine(cmark_node)
     }
 }
 
