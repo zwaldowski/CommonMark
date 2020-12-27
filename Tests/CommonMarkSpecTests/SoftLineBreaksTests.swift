@@ -4,38 +4,40 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecSoftLineBreaksTests: XCTestCase {
-    func testExample645() throws {
+    func testExample669() throws {
         let markdown = #######"""
         foo
         baz
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>foo
         baz</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample646() throws {
+    func testExample670() throws {
         let markdown = #######"""
         foo 
          baz
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>foo
         baz</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

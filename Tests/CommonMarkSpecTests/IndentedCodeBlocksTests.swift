@@ -11,7 +11,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>a simple
           indented code block
         </code></pre>
@@ -19,7 +19,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample78() throws {
@@ -30,7 +31,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>
         <p>foo</p>
@@ -41,7 +42,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample79() throws {
@@ -52,7 +54,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ol>
         <li>
         <p>foo</p>
@@ -65,7 +67,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample80() throws {
@@ -77,7 +80,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>&lt;a/&gt;
         *hi*
         
@@ -87,7 +90,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample81() throws {
@@ -102,7 +106,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>chunk1
         
         chunk2
@@ -115,7 +119,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample82() throws {
@@ -126,7 +131,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>chunk1
           
           chunk2
@@ -135,7 +140,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample83() throws {
@@ -146,14 +152,15 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>Foo
         bar</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample84() throws {
@@ -163,7 +170,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo
         </code></pre>
         <p>bar</p>
@@ -171,7 +178,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample85() throws {
@@ -185,7 +193,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <h1>Heading</h1>
         <pre><code>foo
         </code></pre>
@@ -197,7 +205,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample86() throws {
@@ -207,7 +216,7 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>    foo
         bar
         </code></pre>
@@ -215,7 +224,8 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample87() throws {
@@ -228,14 +238,15 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample88() throws {
@@ -244,14 +255,15 @@ final class CommonMarkSpecIndentedCodeBlocksTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo  
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

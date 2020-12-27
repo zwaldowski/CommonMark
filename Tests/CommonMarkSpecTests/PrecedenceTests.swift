@@ -11,7 +11,7 @@ final class CommonMarkSpecPrecedenceTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>`one</li>
         <li>two`</li>
@@ -20,7 +20,8 @@ final class CommonMarkSpecPrecedenceTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

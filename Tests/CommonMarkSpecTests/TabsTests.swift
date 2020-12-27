@@ -10,14 +10,15 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo	baz		bim
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample2() throws {
@@ -26,14 +27,15 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo	baz		bim
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample3() throws {
@@ -43,7 +45,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>a	a
         ὐ	a
         </code></pre>
@@ -51,7 +53,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample4() throws {
@@ -62,7 +65,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>
         <p>foo</p>
@@ -73,7 +76,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample5() throws {
@@ -84,7 +88,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>
         <p>foo</p>
@@ -96,7 +100,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample6() throws {
@@ -105,7 +110,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <blockquote>
         <pre><code>  foo
         </code></pre>
@@ -114,7 +119,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample7() throws {
@@ -123,7 +129,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>
         <pre><code>  foo
@@ -134,7 +140,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample8() throws {
@@ -144,7 +151,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>foo
         bar
         </code></pre>
@@ -152,7 +159,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample9() throws {
@@ -163,7 +171,7 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <ul>
         <li>foo
         <ul>
@@ -179,7 +187,8 @@ final class CommonMarkSpecTabsTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample10() throws {
@@ -188,13 +197,14 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <h1>Foo</h1>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
     func testExample11() throws {
@@ -203,13 +213,14 @@ final class CommonMarkSpecTabsTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <hr />
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

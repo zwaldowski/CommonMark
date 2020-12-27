@@ -4,37 +4,39 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
-    func testExample298() throws {
+    func testExample308() throws {
         let markdown = #######"""
         \!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample299() throws {
+    func testExample309() throws {
         let markdown = #######"""
         \	\A\a\ \3\φ\«
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>\	\A\a\ \3\φ\«</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample300() throws {
+    func testExample310() throws {
         let markdown = #######"""
         \*not emphasized*
         \<br/> not a tag
@@ -48,7 +50,7 @@ final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>*not emphasized*
         &lt;br/&gt; not a tag
         [not a link](/foo)
@@ -62,73 +64,78 @@ final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample301() throws {
+    func testExample311() throws {
         let markdown = #######"""
         \\*emphasis*
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>\<em>emphasis</em></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample302() throws {
+    func testExample312() throws {
         let markdown = #######"""
         foo\
         bar
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>foo<br />
         bar</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample303() throws {
+    func testExample313() throws {
         let markdown = #######"""
         `` \[\` ``
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><code>\[\`</code></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample304() throws {
+    func testExample314() throws {
         let markdown = #######"""
             \[\]
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>\[\]
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample305() throws {
+    func testExample315() throws {
         let markdown = #######"""
         ~~~
         \[\]
@@ -136,62 +143,66 @@ final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code>\[\]
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample306() throws {
+    func testExample316() throws {
         let markdown = #######"""
         <http://example.com?find=\*>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="http://example.com?find=%5C*">http://example.com?find=\*</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample307() throws {
+    func testExample317() throws {
         let markdown = #######"""
         <a href="/bar\/)">
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <a href="/bar\/)">
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample308() throws {
+    func testExample318() throws {
         let markdown = #######"""
         [foo](/bar\* "ti\*tle")
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="/bar*" title="ti*tle">foo</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample309() throws {
+    func testExample319() throws {
         let markdown = #######"""
         [foo]
         
@@ -199,16 +210,17 @@ final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="/bar*" title="ti*tle">foo</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample310() throws {
+    func testExample320() throws {
         let markdown = #######"""
         ``` foo\+bar
         foo
@@ -216,14 +228,15 @@ final class CommonMarkSpecBackslashEscapesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <pre><code class="language-foo+bar">foo
         </code></pre>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

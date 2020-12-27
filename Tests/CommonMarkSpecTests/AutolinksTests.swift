@@ -4,289 +4,308 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecAutolinksTests: XCTestCase {
-    func testExample590() throws {
+    func testExample602() throws {
         let markdown = #######"""
         <http://foo.bar.baz>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="http://foo.bar.baz">http://foo.bar.baz</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample591() throws {
+    func testExample603() throws {
         let markdown = #######"""
         <http://foo.bar.baz/test?q=hello&id=22&boolean>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean">http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample592() throws {
+    func testExample604() throws {
         let markdown = #######"""
         <irc://foo.bar:2233/baz>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="irc://foo.bar:2233/baz">irc://foo.bar:2233/baz</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample593() throws {
+    func testExample605() throws {
         let markdown = #######"""
         <MAILTO:FOO@BAR.BAZ>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="MAILTO:FOO@BAR.BAZ">MAILTO:FOO@BAR.BAZ</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample594() throws {
+    func testExample606() throws {
         let markdown = #######"""
         <a+b+c:d>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="a+b+c:d">a+b+c:d</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample595() throws {
+    func testExample607() throws {
         let markdown = #######"""
         <made-up-scheme://foo,bar>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="made-up-scheme://foo,bar">made-up-scheme://foo,bar</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample596() throws {
+    func testExample608() throws {
         let markdown = #######"""
         <http://../>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="http://../">http://../</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample597() throws {
+    func testExample609() throws {
         let markdown = #######"""
         <localhost:5001/foo>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="localhost:5001/foo">localhost:5001/foo</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample598() throws {
+    func testExample610() throws {
         let markdown = #######"""
         <http://foo.bar/baz bim>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt;http://foo.bar/baz bim&gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample599() throws {
+    func testExample611() throws {
         let markdown = #######"""
         <http://example.com/\[\>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="http://example.com/%5C%5B%5C">http://example.com/\[\</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample600() throws {
+    func testExample612() throws {
         let markdown = #######"""
         <foo@bar.example.com>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="mailto:foo@bar.example.com">foo@bar.example.com</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample601() throws {
+    func testExample613() throws {
         let markdown = #######"""
         <foo+special@Bar.baz-bar0.com>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><a href="mailto:foo+special@Bar.baz-bar0.com">foo+special@Bar.baz-bar0.com</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample602() throws {
+    func testExample614() throws {
         let markdown = #######"""
         <foo\+@bar.example.com>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt;foo+@bar.example.com&gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample603() throws {
+    func testExample615() throws {
         let markdown = #######"""
         <>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt;&gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample604() throws {
+    func testExample616() throws {
         let markdown = #######"""
         < http://foo.bar >
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt; http://foo.bar &gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample605() throws {
+    func testExample617() throws {
         let markdown = #######"""
         <m:abc>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt;m:abc&gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample606() throws {
+    func testExample618() throws {
         let markdown = #######"""
         <foo.bar.baz>
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>&lt;foo.bar.baz&gt;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample607() throws {
+    func testExample619() throws {
         let markdown = #######"""
         http://example.com
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>http://example.com</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample608() throws {
+    func testExample620() throws {
         let markdown = #######"""
         foo@bar.example.com
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>foo@bar.example.com</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

@@ -4,49 +4,52 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecTextualContentTests: XCTestCase {
-    func testExample647() throws {
+    func testExample671() throws {
         let markdown = #######"""
         hello $.;'there
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>hello $.;'there</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample648() throws {
+    func testExample672() throws {
         let markdown = #######"""
         Foo χρῆν
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>Foo χρῆν</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample649() throws {
+    func testExample673() throws {
         let markdown = #######"""
         Multiple     spaces
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>Multiple     spaces</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

@@ -4,22 +4,23 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecImagesTests: XCTestCase {
-    func testExample568() throws {
+    func testExample580() throws {
         let markdown = #######"""
         ![foo](/url "title")
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample569() throws {
+    func testExample581() throws {
         let markdown = #######"""
         ![foo *bar*]
         
@@ -27,46 +28,49 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample570() throws {
+    func testExample582() throws {
         let markdown = #######"""
         ![foo ![bar](/url)](/url2)
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url2" alt="foo bar" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample571() throws {
+    func testExample583() throws {
         let markdown = #######"""
         ![foo [bar](/url)](/url2)
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url2" alt="foo bar" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample572() throws {
+    func testExample584() throws {
         let markdown = #######"""
         ![foo *bar*][]
         
@@ -74,16 +78,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample573() throws {
+    func testExample585() throws {
         let markdown = #######"""
         ![foo *bar*][foobar]
         
@@ -91,76 +96,81 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample574() throws {
+    func testExample586() throws {
         let markdown = #######"""
         ![foo](train.jpg)
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="train.jpg" alt="foo" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample575() throws {
+    func testExample587() throws {
         let markdown = #######"""
         My ![foo bar](/path/to/train.jpg  "title"   )
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>My <img src="/path/to/train.jpg" alt="foo bar" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample576() throws {
+    func testExample588() throws {
         let markdown = #######"""
         ![foo](<url>)
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="url" alt="foo" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample577() throws {
+    func testExample589() throws {
         let markdown = #######"""
         ![](/url)
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample578() throws {
+    func testExample590() throws {
         let markdown = #######"""
         ![foo][bar]
         
@@ -168,16 +178,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample579() throws {
+    func testExample591() throws {
         let markdown = #######"""
         ![foo][bar]
         
@@ -185,16 +196,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample580() throws {
+    func testExample592() throws {
         let markdown = #######"""
         ![foo][]
         
@@ -202,16 +214,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample581() throws {
+    func testExample593() throws {
         let markdown = #######"""
         ![*foo* bar][]
         
@@ -219,16 +232,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo bar" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample582() throws {
+    func testExample594() throws {
         let markdown = #######"""
         ![Foo][]
         
@@ -236,16 +250,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="Foo" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample583() throws {
+    func testExample595() throws {
         let markdown = #######"""
         ![foo] 
         []
@@ -254,17 +269,18 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" title="title" />
         []</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample584() throws {
+    func testExample596() throws {
         let markdown = #######"""
         ![foo]
         
@@ -272,16 +288,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample585() throws {
+    func testExample597() throws {
         let markdown = #######"""
         ![*foo* bar]
         
@@ -289,16 +306,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="foo bar" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample586() throws {
+    func testExample598() throws {
         let markdown = #######"""
         ![[foo]]
         
@@ -306,17 +324,18 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>![[foo]]</p>
         <p>[[foo]]: /url &quot;title&quot;</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample587() throws {
+    func testExample599() throws {
         let markdown = #######"""
         ![Foo]
         
@@ -324,16 +343,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><img src="/url" alt="Foo" title="title" /></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample588() throws {
+    func testExample600() throws {
         let markdown = #######"""
         !\[foo]
         
@@ -341,16 +361,17 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>![foo]</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
-    func testExample589() throws {
+    func testExample601() throws {
         let markdown = #######"""
         \![foo]
         
@@ -358,13 +379,14 @@ final class CommonMarkSpecImagesTests: XCTestCase {
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p>!<a href="/url" title="title">foo</a></p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

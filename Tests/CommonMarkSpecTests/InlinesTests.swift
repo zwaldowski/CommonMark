@@ -4,19 +4,20 @@ import XCTest
 import CommonMark
 
 final class CommonMarkSpecInlinesTests: XCTestCase {
-    func testExample297() throws {
+    func testExample307() throws {
         let markdown = #######"""
         `hi`lo`
 
         """#######
 
-        let html = #######"""
+        let expected = #######"""
         <p><code>hi</code>lo`</p>
 
         """#######
 
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        XCTAssertEqual(actual, expected)
     }
 
 }

@@ -1,4 +1,4 @@
-COMMONMARK_SPEC_VERSION=0.29
+GFM_SPEC_VERSION=0.29.0.gfm.0
 
 Tests/CommonMarkSpecTests: Resources/spec.json | Resources/spec
 	@mkdir -p $@
@@ -11,8 +11,14 @@ Tests/CommonMarkSpecTests: Resources/spec.json | Resources/spec
 Resources/spec:
 	@mkdir -p Resources/spec
 
-Resources/spec.json:
-	@curl "https://spec.commonmark.org/${COMMONMARK_SPEC_VERSION}/spec.json" > $@
+Resources/spec.json: Resources/test/spec.txt Resources/test/spec_tests.py Resources/test/normalize.py Resources/test/cmark.py
+	@python3 Resources/test/spec_tests.py --spec Resources/test/spec.txt --dump-tests > $@
+
+Resources/test:
+	@mkdir -p Resources/test
+
+Resources/test/%: Resources/test
+	@curl -s -L "https://github.com/github/cmark-gfm/raw/${GFM_SPEC_VERSION}/test/$*" > $@
 
 %.swift: %.swift.gyb
 	@gyb --line-directive '' -o $@ $<
@@ -21,4 +27,5 @@ Resources/spec.json:
 clean:
 	@rm -f Resources/spec.json
 	@rm -rf Resources/spec
+	@rm -rf Resources/test
 	@rm -rf Tests/CommonMarkSpecTests

@@ -11,6 +11,8 @@ import json
 def indent(text, amount, ch=' '):
     padding = amount * ch
     return ''.join(padding+line for line in text.splitlines(True))
+
+extNames = {'table': 'tables', 'autolink': 'automaticLinks', 'tasklist': 'taskLists'}
 }%
 
 import XCTest
@@ -23,18 +25,33 @@ final class CommonMarkSpec${filename}Tests: XCTestCase {
         %{
            number = example['example']
            markdown = example['markdown']
-           html = example['html'] }%
+           html = example['html']
+           tag_filter = 'tagfilter' in example['extensions']
+           extensions = [ext for ext in example['extensions'] if ext != 'tagfilter'] }%
     func testExample${number}() throws {
         let markdown = #######"""
 ${indent(markdown, 8)}
         """#######
 
-        let html = #######"""
+        let expected = #######"""
 ${indent(html, 8)}
         """#######
 
+        % if extensions:
+        var options = Document.ParseOptions()
+        % for extension in extensions:
+        options.${extNames.get(extension, extension)} = true
+        % end
+        let document = try Document(markdown, options: options)
+        % else:
         let document = try Document(markdown)
-        XCTAssertEqual(document.render(format: .html, options: [.unsafe]), html)
+        % end
+        % if tag_filter:
+        let actual = document.render(format: .html, options: .unsafe)
+        % else:
+        let actual = document.render(format: .html, options: [ .unsafe, .unsafeTags ])
+        % end
+        XCTAssertEqual(actual, expected)
     }
 
     % end
