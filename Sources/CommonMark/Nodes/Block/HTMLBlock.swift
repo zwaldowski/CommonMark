@@ -20,6 +20,7 @@ public final class HTMLBlock: Node {
 
     public convenience init(literal: String, children: [Inline & Node] = []) {
         self.init()
+        self.literal = literal
         guard !children.isEmpty else { return }
         for child in children {
             append(child: child)
