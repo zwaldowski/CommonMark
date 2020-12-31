@@ -89,20 +89,23 @@ public extension Node {
     func render(format: RenderingFormat, options: RenderingOptions = [], width: Int = 0) -> String {
         precondition(width >= 0)
 
+        let cString: UnsafeMutablePointer<CChar>
         switch format {
         case .plain:
             cString = cmark_render_plaintext(cmark_node, options.rawValue, Int32(clamping: width))
         case .commonmark:
-            return String(cString: cmark_render_commonmark(cmark_node, options.rawValue, Int32(clamping: width)))
+            cString = cmark_render_commonmark(cmark_node, options.rawValue, Int32(clamping: width))
         case .html:
-            return String(cString: cmark_render_html(cmark_node, options.rawValue, nil))
+            cString = cmark_render_html(cmark_node, options.rawValue, nil)
         case .xml:
-            return String(cString: cmark_render_xml(cmark_node, options.rawValue))
+            cString = cmark_render_xml(cmark_node, options.rawValue)
         case .latex:
-            return String(cString: cmark_render_latex(cmark_node, options.rawValue, Int32(clamping: width)))
+            cString = cmark_render_latex(cmark_node, options.rawValue, Int32(clamping: width))
         case .manpage:
-            return String(cString: cmark_render_man(cmark_node, options.rawValue, Int32(clamping: width)))
+            cString = cmark_render_man(cmark_node, options.rawValue, Int32(clamping: width))
         }
+        defer { free(cString) }
+        return String(cString: cString)
     }
 }
 
@@ -110,6 +113,6 @@ public extension Node {
 
 extension Node: CustomStringConvertible {
     public var description: String {
-        return String(cString: cmark_render_commonmark(cmark_node, 0, 0))
+        render(format: .commonmark)
     }
 }
