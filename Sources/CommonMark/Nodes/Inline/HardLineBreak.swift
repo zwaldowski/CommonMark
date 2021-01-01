@@ -17,6 +17,6 @@ public final class HardLineBreak: Node {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LINEBREAK }
 
     public convenience init() {
-        self.init(nonrecursively: ())
+        self.init(new: ())
     }
 }

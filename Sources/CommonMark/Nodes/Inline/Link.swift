@@ -23,7 +23,7 @@ public final class Link: Node {
     }
 
     public convenience init(urlString: String?, title: String?, children: [Inline & Node] = []) {
-        self.init()
+        self.init(new: ())
         self.urlString = urlString
         self.title = title
         guard !children.isEmpty else { return }

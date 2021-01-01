@@ -50,7 +50,7 @@ public final class List: Node {
         }
 
         public convenience init(children: [Block & Node] = []) {
-            self.init()
+            self.init(new: ())
             guard !children.isEmpty else { return }
             for child in children {
                 append(child: child)
@@ -61,7 +61,7 @@ public final class List: Node {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LIST }
 
     public convenience init(delimiter: Delimiter = .none, children: [List.Item] = []) {
-        self.init()
+        self.init(new: ())
         self.delimiter = delimiter
         guard !children.isEmpty else { return }
         for child in children {

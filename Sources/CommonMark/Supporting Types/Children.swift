@@ -1,21 +1,17 @@
 import cmark_gfm
 
 struct Children: Sequence {
-    var cmark_node: UnsafeMutablePointer<cmark_node>
+    let parent: Node
 
     init(of node: Node) {
-        cmark_node = node.cmark_node
-    }
-
-    init(of document: Document) {
-        cmark_node = document.cmark_node
+        self.parent = node
     }
 
     func makeIterator() -> AnyIterator<Node> {
-        var iterator = CMarkNodeChildIterator(cmark_node)
+        var iterator = CMarkNodeChildIterator(parent.cmark_node)
         return AnyIterator {
             guard let child = iterator.next() else { return nil }
-            return Node.create(for: child)
+            return Node.create(for: child, referencing: parent)
         }
     }
 }
@@ -36,17 +32,20 @@ struct CMarkNodeChildIterator: IteratorProtocol {
 
 // MARK: -
 
-fileprivate func add<Child: Node>(_ child: Child, with operation: () -> Int32) -> Bool {
-    let status = operation()
-    switch status {
-    case 1:
-        child.managed = false
-        return true
-    case 0:
-        return false
-    default:
-        assertionFailure("unexpected status code: \(status)")
-        return false
+private extension Node {
+    func add(_ child: Node, with operation: () -> Int32) -> Bool {
+        let status = operation()
+        switch status {
+        case 1:
+            child.owner = owner ?? self
+            child.managed = false
+            return true
+        case 0:
+            return false
+        default:
+            assertionFailure("unexpected status code: \(status)")
+            return false
+        }
     }
 }
 
@@ -135,8 +134,7 @@ extension ContainerOfBlocks {
     @discardableResult
     public func remove(child: Block & Node) -> Bool {
         guard child.parent == self else { return false }
-        cmark_node_unlink(child.cmark_node)
-        child.managed = true
+        child.removeFromParent()
         return true
     }
 }
@@ -232,8 +230,7 @@ extension ContainerOfInlineElements {
     @discardableResult
     public func remove(child: Inline & Node) -> Bool {
         guard child.parent == self else { return false }
-        cmark_node_unlink(child.cmark_node)
-        child.managed = true
+        child.removeFromParent()
         return true
     }
 }
@@ -317,10 +314,9 @@ extension List {
      */
     @discardableResult
     public func remove(child: Item) -> Bool {
-         guard child.parent == self else { return false }
-         cmark_node_unlink(child.cmark_node)
-         child.managed = true
-         return true
+        guard child.parent == self else { return false }
+        child.removeFromParent()
+        return true
     }
 }
 
@@ -404,8 +400,7 @@ extension List.Item {
     @discardableResult
     public func remove(child: Node) -> Bool {
         guard child.parent == self else { return false }
-        cmark_node_unlink(child.cmark_node)
-        child.managed = true
+        child.removeFromParent()
         return true
     }
 }

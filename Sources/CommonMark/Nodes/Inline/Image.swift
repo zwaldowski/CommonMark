@@ -11,7 +11,7 @@ public final class Image: Node {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_IMAGE }
 
     public convenience init(urlString: String, title: String? = nil) {
-        self.init()
+        self.init(new: ())
         self.urlString = urlString
         self.title = title
     }

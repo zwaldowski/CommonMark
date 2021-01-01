@@ -43,7 +43,7 @@ public final class Heading: Node {
     }
 
     public convenience init(level: Int, children: [Inline & Node] = []) {
-        self.init()
+        self.init(new: ())
         self.level = level
         guard !children.isEmpty else { return }
         for child in children {

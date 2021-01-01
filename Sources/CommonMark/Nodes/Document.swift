@@ -65,7 +65,7 @@ public final class Document: Node {
     }
 
     public convenience init(children: [Block & Node] = []) {
-        self.init()
+        self.init(new: ())
         guard !children.isEmpty else { return }
         for child in children {
             append(child: child)

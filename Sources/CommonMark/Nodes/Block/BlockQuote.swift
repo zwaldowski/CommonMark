@@ -15,7 +15,7 @@ public final class BlockQuote: Node {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_BLOCK_QUOTE }
 
     public convenience init(children: [Block & Node] = []) {
-        self.init()
+        self.init(new: ())
         guard !children.isEmpty else { return }
         for child in children {
             append(child: child)

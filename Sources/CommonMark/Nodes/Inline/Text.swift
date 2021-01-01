@@ -14,7 +14,7 @@ public final class Text: Node {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_TEXT }
 
     public convenience init(literal: String? = nil) {
-        self.init()
+        self.init(new: ())
         self.literal = literal
     }
 }

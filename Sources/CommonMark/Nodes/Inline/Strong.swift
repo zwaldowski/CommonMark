@@ -15,7 +15,7 @@ public final class Strong: Node {
     }
 
     public convenience init(children: [Inline & Node] = []) {
-        self.init()
+        self.init(new: ())
         guard !children.isEmpty else { return }
         for child in children {
             append(child: child)
