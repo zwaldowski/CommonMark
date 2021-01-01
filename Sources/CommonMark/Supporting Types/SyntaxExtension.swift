@@ -6,8 +6,15 @@ enum SyntaxExtension: String {
     case autoLink = "autolink"
     case tagFilter = "tagfilter"
     case taskLists = "tasklist"
+    case frontmatter
 
-    static let ensureRegistered: Void = cmark_gfm_core_extensions_ensure_registered()
+    static let ensureRegistered: Void = {
+        cmark_gfm_core_extensions_ensure_registered()
+        cmark_register_plugin { (plugin) in
+            cmark_plugin_register_syntax_extension(plugin, Frontmatter.makeSyntaxExtension())
+            return 1
+        }
+    }()
 
     var cmark_syntax_extension: UnsafeMutablePointer<cmark_syntax_extension>? {
         Self.ensureRegistered

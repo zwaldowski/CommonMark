@@ -73,6 +73,8 @@ public class Node: Codable {
             return List(cmark_node, owner: owner)
         case CMARK_NODE_ITEM:
             return List.Item(cmark_node, owner: owner)
+        case CMARK_NODE_CODE_BLOCK where strcmp(cmark_node_get_type_string(cmark_node), SyntaxExtension.frontmatter.rawValue) == 0:
+            return Frontmatter(cmark_node, owner: owner)
         case CMARK_NODE_CODE_BLOCK:
             return CodeBlock(cmark_node, owner: owner)
         case CMARK_NODE_HTML_BLOCK:

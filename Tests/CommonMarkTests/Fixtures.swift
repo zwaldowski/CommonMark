@@ -10,4 +10,14 @@ public enum Fixtures {
 
     [udhr]: https://www.un.org/en/universal-declaration-human-rights/ "View full version"
     """#
+
+    static let frontmatter: String = """
+    ---
+    author: George P. Burdell
+    description: A single-line description of the course.
+    cover: shiny.jpg
+    ---
+
+    # Big Nerd Ranch Guides: The Big Nerd Ranch Guide
+    """
 }

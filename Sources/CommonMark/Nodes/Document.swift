@@ -42,6 +42,12 @@ public final class Document: Node, Basic, BlockContainer {
         /// empty (`[ ]`) or filled (`[x]`).
         public var taskLists = false
 
+        /// Parses an optional block of raw YAML at the beginning of the document.
+        ///
+        /// Frontmatter will only appear in the `Document` tree; it will not be rendered into
+        /// any output format.
+        public var frontmatter = false
+
         /// Creates the default options.
         public init() {}
 
@@ -104,6 +110,7 @@ public final class Document: Node, Basic, BlockContainer {
         if options.strikethrough { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.strikethrough.cmark_syntax_extension) }
         if options.automaticLinks { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.autoLink.cmark_syntax_extension) }
         if options.taskLists { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.taskLists.cmark_syntax_extension) }
+        if options.frontmatter { cmark_parser_attach_syntax_extension(parser, CommonMark.SyntaxExtension.frontmatter.cmark_syntax_extension) }
 
         input.withCString { (cString) in
             cmark_parser_feed(parser, cString, input.utf8.count)
