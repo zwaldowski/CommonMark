@@ -1,5 +1,5 @@
 /// A block structure element.
-public class Block: Node {}
+open class Block: Node {}
 
 // MARK: -
 

@@ -20,4 +20,14 @@ public enum Fixtures {
 
     # Big Nerd Ranch Guides: The Big Nerd Ranch Guide
     """
+
+    static let admonition: String = """
+    # Heading
+
+    > **Tip:** This is a `tip` aside.
+    > This may present similarly to a block quote.
+
+    This text comes after the admonition.
+
+    """
 }

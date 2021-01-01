@@ -49,7 +49,7 @@ extension Children: BidirectionalCollection {
 
 extension Children: RangeReplaceableCollection {
     public init() {
-        self.init(parent: CustomBlock(newWithExtension: nil))
+        self.init(parent: CustomBlock())
     }
 
     public func replaceSubrange<Children>(_ subrange: Range<Index>, with newChildren: Children) where Children: Collection, Children.Element == Element {

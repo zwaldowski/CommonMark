@@ -1,7 +1,7 @@
 import cmark_gfm_extensions
 
 /// A CommonMark node.
-public class Node: Codable {
+open class Node: Codable {
     class var cmark_node_type: cmark_node_type { return CMARK_NODE_NONE }
     class var cmark_syntax_extension: UnsafeMutablePointer<cmark_syntax_extension>? { nil }
     class func isCompatible(with type: cmark_node_type) -> Bool {
