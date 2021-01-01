@@ -1,26 +1,62 @@
 import cmark_gfm
+import cmark_gfm_extensions
 
 /// A CommonMark document.
 public final class Document: Node, Basic, BlockContainer {
     /// Options for parsing CommonMark text.
-    public struct ParsingOptions: OptionSet {
-        public var rawValue: Int32
+    public struct ParseOptions {
+        /// Convert ASCII punctuation characters
+        /// to "smart" typographic punctuation characters.
+        ///
+        /// - Straight quotes (" and ') become curly quotes (“ ” and ‘ ’)
+        /// - Dashes (-- and ---) become en-dashes (–) and em-dashes (—)
+        /// - Three consecutive full stops (...) become an ellipsis (…)
+        public var smartPunctuation = false
 
-        public init(rawValue: Int32 = CMARK_OPT_DEFAULT) {
-            self.rawValue = rawValue
-        }
+        /// Parses tables.
+        ///
+        /// A table is an arrangement of data with rows and columns, consisting of a single
+        /// header row, a delimiter row separating the header from the data, and zero
+        /// or more data rows.
+        public var tables = false
 
-        /**
-         Convert ASCII punctuation characters
-         to "smart" typographic punctuation characters.
+        /// Parses strikethrough.
+        ///
+        /// Strikethrough text is any text wrapped in two tildes (~~).
+        public var strikethrough = false
 
-         - Straight quotes (" and ')
-           become curly quotes (“ ” and ‘ ’)
-         - Dashes (-- and ---) become
-           en-dashes (–) and em-dashes (—)
-         - Three consecutive full stops (...) become an ellipsis (…)
-         */
-        public static let smart = Self(rawValue: CMARK_OPT_SMART)
+        /// Parses additional automatic links without requiring the use of `<` and `>`.
+        ///
+        /// Extended autolinks include:
+        /// - A valid email address.
+        /// - A valid domain (`www.commonmark.org`)
+        /// - A URL with one of the schemes `http://`, or `https://`, followed by whitespace.
+        ///
+        /// All extended autolinks may only come at the beginning of a line, after
+        /// whitespace, or after a delimiting character *, _, ~, or (.
+        public var automaticLinks = false
+
+        /// Parses task list items in lists.
+        ///
+        /// A task list item is a list item prefixed by a number of spaces and checkbox, either
+        /// empty (`[ ]`) or filled (`[x]`).
+        public var taskLists = false
+
+        /// Creates the default options.
+        public init() {}
+
+        /// `userInfo` key to specify `ParseOptions` for decoding CommonMark.
+        public static let decodingKey = CodingUserInfoKey(rawValue: "CommonMarkParseOptionsKey")!
+
+        /// Enables the extensions specified by [GitHub-Flavored Markdown](https://github.github.com/gfm).
+        public static let githubFlavored: ParseOptions = {
+            var options = ParseOptions()
+            options.tables = true
+            options.strikethrough = true
+            options.automaticLinks = true
+            options.taskLists = true
+            return options
+        }()
     }
 
     /// A position within a document.
@@ -51,13 +87,29 @@ public final class Document: Node, Basic, BlockContainer {
     /**
      Creates a document from a CommonMark string.
 
-     - Parameter commonmark: A CommonMark string.
+     - Parameter input: A CommonMark string.
      - Throws:
         - `Document.Error.invalid`
           if a document couldn't be constructed with the provided source.
      */
-    public convenience init(_ commonmark: String, options: ParsingOptions = []) throws {
-        guard let cmark_node = cmark_parse_document(commonmark, commonmark.utf8.count, options.rawValue) else {
+    public convenience init<Input>(_ input: Input, options: ParseOptions? = nil) throws where Input: StringProtocol {
+        let options = options ?? ParseOptions()
+        var parserOptions = CInt(0)
+        if options.smartPunctuation { parserOptions |= CMARK_OPT_SMART }
+
+        let parser = cmark_parser_new(parserOptions)
+        defer { cmark_parser_free(parser) }
+
+        if options.tables { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.tables.cmark_syntax_extension) }
+        if options.strikethrough { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.strikethrough.cmark_syntax_extension) }
+        if options.automaticLinks { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.autoLink.cmark_syntax_extension) }
+        if options.taskLists { cmark_parser_attach_syntax_extension(parser, SyntaxExtension.taskLists.cmark_syntax_extension) }
+
+        input.withCString { (cString) in
+            cmark_parser_feed(parser, cString, input.utf8.count)
+        }
+
+        guard let cmark_node = cmark_parser_finish(parser) else {
             throw Error.invalid
         }
 
@@ -65,7 +117,7 @@ public final class Document: Node, Basic, BlockContainer {
     }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }
 

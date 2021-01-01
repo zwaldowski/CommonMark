@@ -23,7 +23,7 @@ public final class Link: Inline, InlineContainer {
     }
 
     public convenience init(urlString: String?, title: String?, children: [Inline] = []) {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
         self.urlString = urlString
         self.title = title
         self.children.append(contentsOf: children)

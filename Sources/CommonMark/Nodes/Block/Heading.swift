@@ -43,7 +43,7 @@ public final class Heading: Block, InlineContainer {
     }
 
     public convenience init(level: Int, children: [Inline] = []) {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
         self.level = level
         self.children.append(contentsOf: children)
     }

@@ -14,6 +14,6 @@ public final class Code: Inline, Literal {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_CODE }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }

@@ -18,6 +18,6 @@ public final class SoftLineBreak: Inline, LineBreak {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_SOFTBREAK }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }

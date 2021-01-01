@@ -15,6 +15,6 @@ public final class BlockQuote: Block, Basic, BlockContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_BLOCK_QUOTE }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }

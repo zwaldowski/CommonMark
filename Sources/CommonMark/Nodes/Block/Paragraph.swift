@@ -19,7 +19,7 @@ public final class Paragraph: Block, Basic, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_PARAGRAPH }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 
     public convenience init(text string: String, replacingNewLinesWithBreaks: Bool = true) {

@@ -28,7 +28,7 @@ public final class CodeBlock: Block, Literal, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_CODE_BLOCK }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 
     public convenience init(literal: String, fenceInfo: String) {

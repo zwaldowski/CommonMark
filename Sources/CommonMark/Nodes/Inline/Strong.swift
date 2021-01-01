@@ -11,6 +11,6 @@ public final class Strong: Inline, Basic, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_STRONG }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }

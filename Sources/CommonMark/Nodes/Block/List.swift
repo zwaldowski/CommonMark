@@ -1,4 +1,4 @@
-import cmark_gfm
+import cmark_gfm_extensions
 
 /**
  An ordered list.
@@ -46,7 +46,30 @@ public final class List: Block, Container {
         override class var cmark_node_type: cmark_node_type { return CMARK_NODE_ITEM }
 
         public convenience init() {
-            self.init(new: ())
+            self.init(newWithExtension: nil)
+        }
+
+        public convenience init(checked: Bool, children: [Block] = []) {
+            self.init(newWithExtension: .taskLists)
+            self.checked = checked
+            self.children.append(contentsOf: children)
+        }
+
+        public convenience init(checked: Bool, children: [Inline]) {
+            self.init(checked: checked, children: [Paragraph(children: children)])
+        }
+
+        /// Indicates completion of a task, or some other off/on information.
+        public var checked: Bool {
+            get {
+                cmark_gfm_extensions_get_tasklist_item_checked(cmark_node)
+            }
+            set {
+                if newValue {
+                    cmark_node_set_syntax_extension(cmark_node, SyntaxExtension.taskLists.cmark_syntax_extension)
+                }
+                cmark_gfm_extensions_set_tasklist_item_checked(cmark_node, newValue)
+            }
         }
     }
 
@@ -55,7 +78,7 @@ public final class List: Block, Container {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LIST }
 
     public convenience init(delimiter: Delimiter = .none, children: [List.Item] = []) {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
         self.delimiter = delimiter
         self.children.append(contentsOf: children)
     }

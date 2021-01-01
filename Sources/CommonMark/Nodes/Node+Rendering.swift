@@ -31,7 +31,7 @@ public extension Node {
         }
 
         /**
-         Render raw HTML and "unsafe" links.
+         Render some raw HTML and "unsafe" links.
 
          A link is considered to be "unsafe"
          if its scheme is `javascript:`, `vbscript:`, or `file:`,
@@ -72,6 +72,17 @@ public extension Node {
          - Important: This option has an effect only when rendering HTML or XML.
          */
         public static let includeSourcePosition = Self(rawValue: CMARK_OPT_SOURCEPOS)
+
+        /**
+         Render all raw HTML.
+
+         By default, raw HTML is replaced by a placeholder HTML comment.
+         With `.unsafeLinks`, some raw HTML is allowed, such as `<sup>`.
+         With this option, all raw HTML is allowed.
+
+         - Important: This option has an effect only when rendering HTML.
+         */
+        public static let unsafeTags = Self(rawValue: 1 << 31)
     }
 
     /**
@@ -96,7 +107,16 @@ public extension Node {
         case .commonmark:
             cString = cmark_render_commonmark(cmark_node, options.rawValue, Int32(clamping: width))
         case .html:
-            cString = cmark_render_html(cmark_node, options.rawValue, nil)
+            var options = options
+            var extensions: UnsafeMutablePointer<cmark_llist>?
+            defer { cmark_llist_free(cmark_get_default_mem_allocator(), extensions) }
+
+            if options.contains(.unsafe), !options.contains(.unsafeTags) {
+                extensions = cmark_llist_append(cmark_get_default_mem_allocator(), extensions, SyntaxExtension.tagFilter.cmark_syntax_extension)
+            }
+            options.remove(.unsafeTags)
+
+            cString = cmark_render_html(cmark_node, options.rawValue, extensions)
         case .xml:
             cString = cmark_render_xml(cmark_node, options.rawValue)
         case .latex:

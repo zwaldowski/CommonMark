@@ -88,7 +88,9 @@ final class DocumentParsingTests: XCTestCase {
         triple-period: ...
         """
 
-        let document = try Document(commonmark, options: [.smart])
+        var options = Document.ParseOptions()
+        options.smartPunctuation = true
+        let document = try Document(commonmark, options: options)
 
         let paragraph = try XCTUnwrap(document.children.first as? Paragraph)
         let paragraphText = paragraph.description.trimmingCharacters(

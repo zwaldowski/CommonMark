@@ -1,8 +1,9 @@
-import cmark_gfm
+import cmark_gfm_extensions
 
 /// A CommonMark node.
 public class Node: Codable {
     class var cmark_node_type: cmark_node_type { return CMARK_NODE_NONE }
+    class var cmark_syntax_extension: UnsafeMutablePointer<cmark_syntax_extension>? { nil }
     class func isCompatible(with type: cmark_node_type) -> Bool {
         self != Node.self && type == cmark_node_type
     }
@@ -27,8 +28,9 @@ public class Node: Codable {
     }
 
     /// Creates a new, managed node.
-    init(new: ()) {
-        self.cmark_node = cmark_node_new(Self.cmark_node_type)
+    init(newWithExtension syntaxExtension: SyntaxExtension?) {
+        let cmark_syntax_extension = syntaxExtension?.cmark_syntax_extension ?? Self.cmark_syntax_extension
+        self.cmark_node = cmark_node_new_with_ext(Self.cmark_node_type, cmark_syntax_extension)
         self.managed = true
         cmark_node_set_user_data(cmark_node, Unmanaged.passUnretained(self).toOpaque())
     }
@@ -99,6 +101,16 @@ public class Node: Codable {
             return Link(cmark_node, owner: owner)
         case CMARK_NODE_IMAGE:
             return Image(cmark_node, owner: owner)
+        case CMARK_NODE_STRIKETHROUGH:
+            return Strikethrough(cmark_node, owner: owner)
+        case CMARK_NODE_TABLE:
+            return Table(cmark_node, owner: owner)
+        case CMARK_NODE_TABLE_ROW where cmark_gfm_extensions_get_table_row_is_header(cmark_node) != 0:
+            return Table.Head(cmark_node, owner: owner)
+        case CMARK_NODE_TABLE_ROW:
+            return Table.Row(cmark_node, owner: owner)
+        case CMARK_NODE_TABLE_CELL:
+            return Table.Cell(cmark_node, owner: owner)
         case let unknown where CMARK_NODE_TYPE_INLINE_P(unknown):
             return CustomInline(cmark_node, owner: owner)
         default:
@@ -131,7 +143,8 @@ public class Node: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let commonmark = try container.decode(String.self)
-        let document = try Document(commonmark)
+        let options = decoder.userInfo[Document.ParseOptions.decodingKey] as? Document.ParseOptions
+        let document = try Document(commonmark, options: options)
         if let node = document as? Self {
             self.cmark_node = node.cmark_node
         } else if let block = document.children.first as? Self, document.children.dropFirst().isEmpty {

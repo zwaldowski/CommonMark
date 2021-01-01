@@ -11,6 +11,6 @@ public final class Emphasis: Inline, Basic, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_EMPH }
 
     public convenience init() {
-        self.init(new: ())
+        self.init(newWithExtension: nil)
     }
 }
