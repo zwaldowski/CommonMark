@@ -10,20 +10,16 @@ import cmark_gfm
  > An HTML block is a group of lines that is treated as raw HTML
  > (and will not be escaped in HTML output).
  */
-public final class HTMLBlock: Node {
+public final class HTMLBlock: Block, Literal, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_HTML_BLOCK }
 
-    public convenience init(literal: String? = nil) {
+    public convenience init() {
         self.init(new: ())
-        self.literal = literal
     }
 
-    public convenience init(literal: String, children: [Inline & Node] = []) {
-        self.init(new: ())
+    public convenience init(literal: String, children: [Inline]) {
+        self.init()
         self.literal = literal
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
+        self.children.append(contentsOf: children)
     }
 }

@@ -24,16 +24,15 @@ import cmark_gfm
  > A fenced code block begins with a code fence,
  > indented no more than three spaces.
  */
-public final class CodeBlock: Node {
+public final class CodeBlock: Block, Literal, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_CODE_BLOCK }
 
-    public convenience init(literal: String? = nil) {
+    public convenience init() {
         self.init(new: ())
-        self.literal = literal
     }
 
-    public convenience init(literal: String, fenceInfo: String? = nil) {
-        self.init(new: ())
+    public convenience init(literal: String, fenceInfo: String) {
+        self.init()
         self.literal = literal
         self.fenceInfo = fenceInfo
     }

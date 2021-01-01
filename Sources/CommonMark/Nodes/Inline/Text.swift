@@ -10,11 +10,10 @@ import cmark_gfm
  > Any characters not given an interpretation by the above rules
  > will be parsed as plain textual content.
 */
-public final class Text: Node {
+public final class Text: Inline, Literal {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_TEXT }
 
-    public convenience init(literal: String? = nil) {
+    public convenience init() {
         self.init(new: ())
-        self.literal = literal
     }
 }

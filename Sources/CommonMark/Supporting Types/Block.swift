@@ -1,25 +1,13 @@
-import cmark_gfm
-
 /// A block structure element.
-public protocol Block {}
+public class Block: Node {}
 
 // MARK: -
 
-/// A block that can contain other blocks.
-public protocol ContainerBlock: Block {}
+/// A node that contains block elements.
+public protocol BlockContainer: Container where Child == Block {}
 
-extension BlockQuote: ContainerBlock {}
-extension List: ContainerBlock {}
-extension List.Item: ContainerBlock {}
-
-// MARK: -
-
-/// A block that can only contain inline elements.
-public protocol LeafBlock: Block {}
-
-extension Heading: LeafBlock {}
-extension Paragraph: LeafBlock {}
-extension HTMLBlock: LeafBlock {}
-extension CodeBlock: LeafBlock {}
-extension ThematicBreak: LeafBlock {}
-
+public extension BlockContainer where Self: Basic {
+    init(children: [Inline]) {
+        self.init(children: [ Paragraph(children: children) ])
+    }
+}

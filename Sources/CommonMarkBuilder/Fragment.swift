@@ -1,14 +1,16 @@
 import CommonMark
 
 public struct Fragment {
-    public var children: [Block & Node] = []
+    public var children: [Block] = []
 
-    init(children: [Block & Node]) {
+    init(children: [Block]) {
         self.children = children
     }
 
     public init(@StringBuilder _ builder: () -> String) {
-        self.init(children: (try? Document(builder()).children) ?? [])
+        let document = try? Document(builder())
+        let children = document.map { Array($0.children) } ?? []
+        self.init(children: children)
     }
 
     public init(@CommonMarkBuilder _ builder: () -> BlockConvertible) {
@@ -19,7 +21,7 @@ public struct Fragment {
 // MARK: - BlockConvertible
 
 extension Fragment: BlockConvertible {
-    public var blockValue: [Block & Node] {
+    public var blockValue: [Block] {
         return children
     }
 }

@@ -1,9 +1,9 @@
 import CommonMark
 
 public struct Section {
-    public var children: [Block & Node] = []
+    public var children: [Block] = []
 
-    init(children: [Block & Node]) {
+    init(children: [Block]) {
         self.children = children
     }
 
@@ -19,7 +19,7 @@ public struct Section {
 // MARK: - BlockConvertible
 
 extension Section: BlockConvertible {
-    public var blockValue: [Block & Node] {
+    public var blockValue: [Block] {
         return children
     }
 }

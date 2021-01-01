@@ -15,20 +15,17 @@ import cmark_gfm
 
  > ## [6.7 Autolinks](https://spec.commonmark.org/0.29/#autolinks)
  */
-public final class Link: Node {
+public final class Link: Inline, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LINK }
     
     public convenience init(urlString: String, title: String? = nil, text string: String) {
         self.init(urlString: urlString, title: title, children: [Text(literal: string)])
     }
 
-    public convenience init(urlString: String?, title: String?, children: [Inline & Node] = []) {
+    public convenience init(urlString: String?, title: String?, children: [Inline] = []) {
         self.init(new: ())
         self.urlString = urlString
         self.title = title
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
+        self.children.append(contentsOf: children)
     }
 }

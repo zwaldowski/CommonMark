@@ -7,26 +7,26 @@ final class DocumentParsingTests: XCTestCase {
 
         XCTAssertEqual(document.children.count, 3)
 
-        let heading = document.children[0] as! Heading
+        let heading = try XCTUnwrap(document.children.first as? Heading)
         XCTAssertEqual(heading.level, 1)
         XCTAssertEqual(heading.children.count, 1)
         XCTAssertEqual(heading.parent, document)
 
-        let link = heading.children[0] as! Link
+        let link = try XCTUnwrap(heading.children.first as? Link)
         XCTAssertEqual(link.urlString, "https://www.un.org/en/universal-declaration-human-rights/")
         XCTAssertEqual(link.title, "View full version")
         XCTAssertEqual(link.parent, heading)
 
-        let subheading = document.children[1] as! Heading
+        let subheading = try XCTUnwrap(document.children.dropFirst().first as? Heading)
         XCTAssertEqual(subheading.level, 2)
         XCTAssertEqual(subheading.children.count, 1)
         XCTAssertEqual(subheading.parent, document)
 
-        let subheadingText = subheading.children[0] as! Text
+        let subheadingText = try XCTUnwrap(subheading.children.first as? Text)
         XCTAssertEqual(subheadingText.literal, "Article 1.")
         XCTAssertEqual(subheadingText.parent, subheading)
 
-        let paragraph = document.children[2] as! Paragraph
+        let paragraph = try XCTUnwrap(document.children.dropFirst(2).first as? Paragraph)
         XCTAssert(paragraph.description.starts(with: "All human beings"))
         XCTAssertEqual(paragraph.range.lowerBound.line, 5)
         XCTAssertEqual(paragraph.range.lowerBound.column, 1)
@@ -41,9 +41,9 @@ final class DocumentParsingTests: XCTestCase {
 
         let document = try Document(commonmark)
 
-        let list = document.children.first as! List
-        let item = list.children.first! as List.Item
-        let heading = item.children.first as! Heading
+        let list = try XCTUnwrap(document.children.first as? List)
+        let item = try XCTUnwrap(list.children.first)
+        let heading = try XCTUnwrap(item.children.first as? Heading)
         XCTAssertEqual(heading.range.lowerBound.line, 1)
         XCTAssertEqual(heading.range.lowerBound.column, 3)
         XCTAssertEqual(heading.range.upperBound.line, 1)
@@ -65,7 +65,7 @@ final class DocumentParsingTests: XCTestCase {
 
         let document = try Document(commonmark)
 
-        let paragraph = document.children.first as! Paragraph
+        let paragraph = try XCTUnwrap(document.children.first as? Paragraph)
         let paragraphText = paragraph.description.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
@@ -90,7 +90,7 @@ final class DocumentParsingTests: XCTestCase {
 
         let document = try Document(commonmark, options: [.smart])
 
-        let paragraph = document.children.first as! Paragraph
+        let paragraph = try XCTUnwrap(document.children.first as? Paragraph)
         let paragraphText = paragraph.description.trimmingCharacters(
             in: .whitespacesAndNewlines
         )

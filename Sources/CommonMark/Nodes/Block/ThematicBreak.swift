@@ -12,7 +12,7 @@ import cmark_gfm
  > each followed optionally by any number of spaces or tabs,
  > forms a thematic break.
  */
-public final class ThematicBreak: Node {
+public final class ThematicBreak: Block, Basic {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_THEMATIC_BREAK }
 
     public convenience init() {

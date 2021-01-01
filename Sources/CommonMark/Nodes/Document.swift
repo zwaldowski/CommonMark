@@ -1,7 +1,7 @@
 import cmark_gfm
 
 /// A CommonMark document.
-public final class Document: Node {
+public final class Document: Node, Basic, BlockContainer {
     /// Options for parsing CommonMark text.
     public struct ParsingOptions: OptionSet {
         public var rawValue: Int32
@@ -64,12 +64,8 @@ public final class Document: Node {
         self.init(cmark_node)
     }
 
-    public convenience init(children: [Block & Node] = []) {
+    public convenience init() {
         self.init(new: ())
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
     }
 }
 

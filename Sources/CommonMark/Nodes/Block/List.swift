@@ -19,7 +19,7 @@ import cmark_gfm
  > (The reason for the length limit is that
  > with 10 digits we start seeing integer overflows in some browsers.)
 */
-public final class List: Node {
+public final class List: Block, Container {
     public enum Kind: Hashable {
         case bullet
         case ordered
@@ -42,31 +42,22 @@ public final class List: Node {
         }
     }
 
-    public final class Item: Node {
+    public final class Item: Block, Basic, BlockContainer {
         override class var cmark_node_type: cmark_node_type { return CMARK_NODE_ITEM }
 
-        public convenience init(children: [Inline & Node] = []) {
-            self.init(children: [Paragraph(children: children)])
-        }
-
-        public convenience init(children: [Block & Node] = []) {
+        public convenience init() {
             self.init(new: ())
-            guard !children.isEmpty else { return }
-            for child in children {
-                append(child: child)
-            }
         }
     }
+
+    public typealias Child = Item
 
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LIST }
 
     public convenience init(delimiter: Delimiter = .none, children: [List.Item] = []) {
         self.init(new: ())
         self.delimiter = delimiter
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
+        self.children.append(contentsOf: children)
     }
 
     public var kind: Kind {

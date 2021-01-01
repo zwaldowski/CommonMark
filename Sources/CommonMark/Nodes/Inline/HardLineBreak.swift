@@ -13,7 +13,7 @@ import cmark_gfm
  > is parsed as a hard line break
  > (rendered in HTML as a `<br />` tag):
  */
-public final class HardLineBreak: Node {
+public final class HardLineBreak: Inline, LineBreak {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LINEBREAK }
 
     public convenience init() {

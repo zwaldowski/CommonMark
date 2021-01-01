@@ -33,7 +33,7 @@ import cmark_gfm
  > code fence, ATX heading, block quote,
  > thematic break, list item, or HTML block.
  */
-public final class Heading: Node {
+public final class Heading: Block, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_HEADING }
 
     static let levelRange: ClosedRange<Int> = 1...6
@@ -42,13 +42,10 @@ public final class Heading: Node {
         self.init(level: level, children: [Text(literal: string)])
     }
 
-    public convenience init(level: Int, children: [Inline & Node] = []) {
+    public convenience init(level: Int, children: [Inline] = []) {
         self.init(new: ())
         self.level = level
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
+        self.children.append(contentsOf: children)
     }
 
     public var level: Int {

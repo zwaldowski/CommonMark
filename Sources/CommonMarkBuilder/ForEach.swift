@@ -9,7 +9,7 @@ public struct ForEach {
 // MARK: - BlockConvertible
 
 extension ForEach: BlockConvertible {
-    public var blockValue: [Block & Node] {
+    public var blockValue: [Block] {
         children.flatMap { $0.blockValue }
     }
 }
@@ -18,6 +18,6 @@ extension ForEach: BlockConvertible {
 
 extension ForEach: ListItemConvertible {
     public var listItemValue: [List.Item] {
-        return children as? [List.Item] ?? [List.Item(children: children.compactMap { $0 as? Block & Node })]
+        return children as? [List.Item] ?? [List.Item(children: children.compactMap { $0 as? Block })]
     }
 }

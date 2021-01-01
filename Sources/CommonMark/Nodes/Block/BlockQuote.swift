@@ -11,14 +11,10 @@ import cmark_gfm
  > plus (a) the character > together with a following space,
  > or (b) a single character > not followed by a space.
  */
-public final class BlockQuote: Node {
+public final class BlockQuote: Block, Basic, BlockContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_BLOCK_QUOTE }
 
-    public convenience init(children: [Block & Node] = []) {
+    public convenience init() {
         self.init(new: ())
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
     }
 }

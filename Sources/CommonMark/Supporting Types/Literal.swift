@@ -1,13 +1,18 @@
 import cmark_gfm
 
 /// An element with literal contents.
-public protocol Literal: Node {
-    init(literal: String?)
+public protocol Literal: Basic {
+    init(literal: String)
 }
 
 // MARK: -
 
 extension Literal {
+    public init(literal: String) {
+        self.init()
+        self.literal = literal
+    }
+
     /// The literal contents of the element.
     public var literal: String? {
         get {
@@ -19,12 +24,3 @@ extension Literal {
         }
     }
 }
-
-
-// MARK: -
-
-extension Code: Literal {}
-extension CodeBlock: Literal {}
-extension RawHTML: Literal {}
-extension HTMLBlock: Literal {}
-extension Text: Literal {}

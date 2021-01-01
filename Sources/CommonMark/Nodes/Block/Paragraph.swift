@@ -15,11 +15,15 @@ import cmark_gfm
  > The paragraph’s raw content is formed by
  > concatenating the lines and removing initial and final whitespace.
 */
-public final class Paragraph: Node {
+public final class Paragraph: Block, Basic, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_PARAGRAPH }
 
+    public convenience init() {
+        self.init(new: ())
+    }
+
     public convenience init(text string: String, replacingNewLinesWithBreaks: Bool = true) {
-        let children: [Inline & Node]
+        let children: [Inline]
         if replacingNewLinesWithBreaks {
             children = string.split(separator: "\n", omittingEmptySubsequences: false)
                              .flatMap { ($0.isEmpty ? [HardLineBreak()] : [Text(literal: "\($0)"), SoftLineBreak()]) }
@@ -28,13 +32,5 @@ public final class Paragraph: Node {
         }
 
         self.init(children: children)
-    }
-
-    public convenience init(children: [Inline & Node] = []) {
-        self.init(new: ())
-        guard !children.isEmpty else { return }
-        for child in children {
-            append(child: child)
-        }
     }
 }

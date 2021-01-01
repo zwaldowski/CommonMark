@@ -1,14 +1,13 @@
 /// An inline content element.
-public protocol Inline {}
+public class Inline: Node {}
 
 // MARK: -
 
-extension Text: Inline {}
-extension Strong: Inline {}
-extension Emphasis: Inline {}
-extension Link: Inline {}
-extension Image: Inline {}
-extension Code: Inline {}
-extension RawHTML: Inline {}
-extension SoftLineBreak: Inline {}
-extension HardLineBreak: Inline {}
+/// A node that contains inline elements.
+public protocol InlineContainer: Container where Child == Inline {}
+
+public extension InlineContainer where Self: Basic, Self: Inline {
+    init(text string: String) {
+        self.init(children: [ Text(literal: string) ])
+    }
+}

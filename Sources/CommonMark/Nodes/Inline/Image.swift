@@ -7,7 +7,7 @@ import cmark_gfm
 
  > ## [6.6 Images](https://spec.commonmark.org/0.29/#images)
 */
-public final class Image: Node {
+public final class Image: Inline {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_IMAGE }
 
     public convenience init(urlString: String, title: String? = nil) {
