@@ -3,6 +3,9 @@ import cmark_gfm
 /// A CommonMark node.
 public class Node: Codable {
     class var cmark_node_type: cmark_node_type { return CMARK_NODE_NONE }
+    class func isCompatible(with type: cmark_node_type) -> Bool {
+        self != Node.self && type == cmark_node_type
+    }
 
     /// A pointer to the underlying `cmark_node` for the node.
     final let cmark_node: UnsafeMutablePointer<cmark_node>
@@ -16,8 +19,7 @@ public class Node: Codable {
 
     /// Creates a node with the specified `owner` over the `cmark_node` pointer.
     init(_ cmark_node: UnsafeMutablePointer<cmark_node>, owner: Node? = nil) {
-        assert(Self.self != Node.self)
-        assert(cmark_node_get_type(cmark_node) == Self.cmark_node_type)
+        assert(Self.isCompatible(with: cmark_node_get_type(cmark_node)))
         self.cmark_node = cmark_node
         self.owner = owner
         self.managed = owner == nil
@@ -54,9 +56,7 @@ public class Node: Codable {
      - Parameter cmark_node: A `cmark_node` pointer.
      - Returns: An instance of a `Node` subclass.
      */
-    static func create(for cmark_node: UnsafeMutablePointer<cmark_node>?, referencing parent: Node) -> Node? {
-        guard let cmark_node = cmark_node else { return nil }
-
+    static func create(for cmark_node: UnsafeMutablePointer<cmark_node>, referencing parent: Node) -> Node {
         if let existing = get(from: cmark_node) {
             return existing
         }
@@ -68,14 +68,7 @@ public class Node: Codable {
         case CMARK_NODE_BLOCK_QUOTE:
             return BlockQuote(cmark_node, owner: owner)
         case CMARK_NODE_LIST:
-            switch cmark_node_get_list_type(cmark_node) {
-            case CMARK_BULLET_LIST:
-                return List(cmark_node, owner: owner)
-            case CMARK_ORDERED_LIST:
-                return List(cmark_node, owner: owner)
-            default:
-                return nil
-            }
+            return List(cmark_node, owner: owner)
         case CMARK_NODE_ITEM:
             return List.Item(cmark_node, owner: owner)
         case CMARK_NODE_CODE_BLOCK:
@@ -106,8 +99,10 @@ public class Node: Codable {
             return Link(cmark_node, owner: owner)
         case CMARK_NODE_IMAGE:
             return Image(cmark_node, owner: owner)
+        case let unknown where CMARK_NODE_TYPE_INLINE_P(unknown):
+            return CustomInline(cmark_node, owner: owner)
         default:
-            return nil
+            return CustomBlock(cmark_node, owner: owner)
         }
     }
 
@@ -121,7 +116,8 @@ public class Node: Codable {
 
     /// The parent of the element, if any.
     public var parent: Node? {
-        return Node.create(for: cmark_node_parent(cmark_node), referencing: self)
+        guard let cmark_node = cmark_node_parent(cmark_node) else { return nil }
+        return Node.create(for: cmark_node, referencing: self)
     }
 
     /// Removes the node from its parent's children.
