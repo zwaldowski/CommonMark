@@ -17,7 +17,7 @@ final class CommonMarkBuilderTests: XCTestCase {
                 Heading { "Article 1." }
             }
 
-            Fragment {
+            Document {
                 """
                 All human beings are born free and equal in dignity and rights.
                 They are endowed with reason and conscience

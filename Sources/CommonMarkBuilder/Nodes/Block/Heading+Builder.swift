@@ -5,7 +5,7 @@ extension Heading {
         self.init(level: level, text: closure())
     }
 
-    public convenience init(level: Int = 1, @CommonMarkBuilder _ builder: () -> InlineConvertible) {
-        self.init(level: level, children: builder().inlineValue)
+    public convenience init(level: Int = 1, @CommonMarkBuilder _ builder: () -> [Inline]) {
+        self.init(level: level, children: builder())
     }
 }

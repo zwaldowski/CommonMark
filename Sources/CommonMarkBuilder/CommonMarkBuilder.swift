@@ -2,58 +2,57 @@
 
 @_functionBuilder
 public struct CommonMarkBuilder {
+    // MARK: buildExpression
+
+    public static func buildExpression<Expression>(_ children: Expression) -> [Expression] where Expression: Node {
+        return [children]
+    }
+
+    public static func buildExpression<Expression>(_ children: ForEach<Expression>) -> [Expression] where Expression: Node {
+        return children.children
+    }
+
+    public static func buildExpression(_ document: Document) -> [Block] {
+        return Array(document.children)
+    }
+
+    public static func buildExpression(_ children: Section) -> [Block] {
+        return children.children
+    }
+
+    public static func buildExpression(_ children: String) -> [Block] {
+        return [Paragraph(text: children)]
+    }
+
+    public static func buildExpression(_ children: String) -> [Inline] {
+        return [Text(literal: children)]
+    }
 
     // MARK: buildBlock
 
-    public static func buildBlock(_ children: InlineConvertible...) -> InlineConvertible {
-        return Paragraph(children: children.flatMap { $0.inlineValue })
-    }
-
-    public static func buildBlock(_ children: BlockConvertible...) -> BlockConvertible {
-        return Fragment(children: children.flatMap { $0.blockValue })
-    }
-
-    public static func buildBlock(_ children: ListItemConvertible...) -> ListItemConvertible {
-        return Fragment(children: children.flatMap { $0.listItemValue })
+    public static func buildBlock<Component>(_ children: [Component]...) -> [Component] where Component: Node {
+        return children.flatMap { $0 }
     }
 
     // MARK: buildIf
 
-    public static func buildIf(_ child: InlineConvertible?) -> InlineConvertible {
-        return child ?? Text()
-    }
-
-    public static func buildIf(_ child: BlockConvertible?) -> BlockConvertible {
-        return child ?? Fragment { "" }
-    }
-
-    public static func buildIf(_ child: ListItemConvertible?) -> ListItemConvertible {
-        return child ?? Fragment { "" }
+    public static func buildIf<Component>(_ children: [Component]?) -> [Component] where Component: Node {
+        return children ?? []
     }
 
     // MARK: buildEither
 
-    public static func buildEither(first: InlineConvertible) -> InlineConvertible {
-        return first
+    public static func buildEither<Component>(first children: [Component]) -> [Component] where Component: Node {
+        return children
     }
 
-    public static func buildEither(second: InlineConvertible) -> InlineConvertible {
-        return second
+    public static func buildEither<Component>(second children: [Component]) -> [Component] where Component: Node {
+        return children
     }
 
-    public static func buildEither(first: BlockConvertible) -> BlockConvertible {
-        return first
-    }
+    // MARK: -
 
-    public static func buildEither(second: BlockConvertible) -> BlockConvertible {
-        return second
-    }
-
-    public static func buildEither(first: ListItemConvertible) -> ListItemConvertible {
-        return first
-    }
-
-    public static func buildEither(second: ListItemConvertible) -> ListItemConvertible {
-        return second
+    public static func buildArray<Component>(_ children: [Component]) -> [Component] where Component: Node {
+        return children
     }
 }

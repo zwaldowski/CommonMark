@@ -7,19 +7,11 @@ public struct Section {
         self.children = children
     }
 
-    public init(levelAdjustment: Int = +1, @CommonMarkBuilder _ builder: () -> BlockConvertible) {
-        self.init(children: builder().blockValue.map { child in
+    public init(levelAdjustment: Int = +1, @CommonMarkBuilder content: () -> [Block]) {
+        self.init(children: content().map { child in
             guard let heading = child as? Heading else { return child }
             heading.level += levelAdjustment
             return heading
         })
-    }
-}
-
-// MARK: - BlockConvertible
-
-extension Section: BlockConvertible {
-    public var blockValue: [Block] {
-        return children
     }
 }

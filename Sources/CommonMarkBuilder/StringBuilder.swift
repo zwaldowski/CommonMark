@@ -2,10 +2,6 @@
 public struct StringBuilder {
     // MARK: buildBlock
 
-    public static func buildBlock(_ string: String) -> String {
-        return string
-    }
-
     public static func buildBlock(_ strings: String...) -> String {
         return strings.joined(separator: "\n\n")
     }
@@ -24,5 +20,11 @@ public struct StringBuilder {
 
     public static func buildEither(second: String) -> String {
         return second
+    }
+
+    // MARK: -
+
+    public static func buildArray(_ strings: [String]) -> [String] {
+        return strings
     }
 }

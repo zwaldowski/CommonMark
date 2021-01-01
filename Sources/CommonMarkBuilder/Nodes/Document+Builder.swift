@@ -1,7 +1,7 @@
 import CommonMark
 
 extension Document {
-    public convenience init(@CommonMarkBuilder _ builder: () -> BlockConvertible) {
-        self.init(children: builder().blockValue)
+    public convenience init(@CommonMarkBuilder content: () -> [Block]) {
+        self.init(children: content())
     }
 }
