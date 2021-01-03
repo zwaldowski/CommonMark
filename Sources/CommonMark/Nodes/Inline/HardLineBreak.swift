@@ -19,4 +19,8 @@ public final class HardLineBreak: Inline, LineBreak {
     public convenience init() {
         self.init(newWithExtension: nil)
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(hardLineBreak: self)
+    }
 }

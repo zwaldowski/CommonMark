@@ -22,4 +22,8 @@ public final class HTMLBlock: Block, Literal, InlineContainer {
         self.literal = literal
         self.children.append(contentsOf: children)
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(htmlBlock: self)
+    }
 }

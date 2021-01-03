@@ -20,6 +20,10 @@ public class CustomInline: Inline, InlineContainer {
         try super.init(from: decoder)
     }
 
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(customInline: self)
+    }
+
     open func renderMarkdownStart<Output>(to target: inout Output) where Output: MarkdownOutputStream {}
     open func renderMarkdownEnd<Output>(to target: inout Output) where Output: MarkdownOutputStream {}
 

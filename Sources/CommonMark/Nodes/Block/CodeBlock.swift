@@ -46,4 +46,8 @@ public final class CodeBlock: Block, Literal, InlineContainer {
             cmark_node_set_fence_info(cmark_node, newValue)
         }
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(codeBlock: self)
+    }
 }

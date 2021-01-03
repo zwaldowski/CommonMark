@@ -28,4 +28,8 @@ public final class Link: Inline, InlineContainer {
         self.title = title
         self.children.append(contentsOf: children)
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(link: self)
+    }
 }

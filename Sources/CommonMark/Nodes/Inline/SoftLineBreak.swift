@@ -20,4 +20,8 @@ public final class SoftLineBreak: Inline, LineBreak {
     public convenience init() {
         self.init(newWithExtension: nil)
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(softLineBreak: self)
+    }
 }

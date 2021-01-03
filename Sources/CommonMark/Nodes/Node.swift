@@ -140,6 +140,10 @@ open class Node: Codable {
         managed = true
     }
 
+    public func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        preconditionFailure("Method must be overridden")
+    }
+
     // MARK: - Codable
 
     public required init(from decoder: Decoder) throws {

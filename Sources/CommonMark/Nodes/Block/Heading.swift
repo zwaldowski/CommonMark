@@ -58,4 +58,8 @@ public final class Heading: Block, InlineContainer {
             cmark_node_set_heading_level(cmark_node, numericCast(newValue))
         }
     }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(heading: self)
+    }
 }

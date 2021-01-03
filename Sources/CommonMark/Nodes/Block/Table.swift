@@ -30,6 +30,10 @@ public final class Table: Block, Container {
         public required convenience init() {
             self.init(newWithExtension: nil)
         }
+
+        public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+            visitor.visit(tableRow: self)
+        }
     }
 
     /**
@@ -43,6 +47,10 @@ public final class Table: Block, Container {
         public required convenience init() {
             self.init(newWithExtension: nil)
             cmark_gfm_extensions_set_table_row_is_header(cmark_node, 1)
+        }
+
+        public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+            visitor.visit(tableHead: self)
         }
     }
 
@@ -59,6 +67,10 @@ public final class Table: Block, Container {
 
         public convenience init() {
             self.init(newWithExtension: nil)
+        }
+
+        public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+            visitor.visit(tableCell: self)
         }
     }
 
@@ -93,5 +105,9 @@ public final class Table: Block, Container {
             var rawColumnAlignments = newValue.map { $0?.rawValue ?? 0 }
             cmark_gfm_extensions_set_table_alignments(cmark_node, numericCast(rawColumnAlignments.count), &rawColumnAlignments)
         }
+    }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(table: self)
     }
 }

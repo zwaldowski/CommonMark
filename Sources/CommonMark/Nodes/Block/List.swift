@@ -71,6 +71,10 @@ public final class List: Block, Container {
                 cmark_gfm_extensions_set_tasklist_item_checked(cmark_node, newValue)
             }
         }
+
+        public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+            visitor.visit(listItem: self)
+        }
     }
 
     public typealias Child = Item
@@ -142,5 +146,9 @@ public final class List: Block, Container {
         set {
             cmark_node_set_list_tight(cmark_node, newValue ? 1 : 0)
         }
+    }
+
+    public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {
+        visitor.visit(list: self)
     }
 }
