@@ -38,14 +38,18 @@ public final class Heading: Block, InlineContainer {
 
     static let levelRange: ClosedRange<Int> = 1...6
 
-    public convenience init(level: Int, text string: String) {
-        self.init(level: level, children: [Text(literal: string)])
-    }
-
-    public convenience init(level: Int, children: [Inline] = []) {
+    public convenience init(level: Int) {
         self.init(newWithExtension: nil)
         self.level = level
+    }
+
+    public convenience init<Children>(level: Int, children: Children) where Children: Sequence, Children.Element == Inline {
+        self.init(level: level)
         self.children.append(contentsOf: children)
+    }
+
+    public convenience init(level: Int, text string: String) {
+        self.init(level: level, children: [Text(literal: string)])
     }
 
     public var level: Int {

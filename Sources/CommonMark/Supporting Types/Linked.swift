@@ -1,8 +1,6 @@
 import cmark_gfm
 
 public protocol Linked: Node {}
-extension Link: Linked {}
-extension Image: Linked {}
 
 public extension Linked {
     var urlString: String {

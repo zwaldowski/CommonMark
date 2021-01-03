@@ -15,18 +15,18 @@ import cmark_gfm
 
  > ## [6.7 Autolinks](https://spec.commonmark.org/0.29/#autolinks)
  */
-public final class Link: Inline, InlineContainer {
+public final class Link: Inline, Linked, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LINK }
-    
-    public convenience init(urlString: String, title: String = "", text string: String) {
-        self.init(urlString: urlString, title: title, children: [Text(literal: string)])
-    }
 
-    public convenience init(urlString: String, title: String = "", children: [Inline] = []) {
+    public convenience init<Children>(urlString: String, title: String = "", children: Children) where Children: Sequence, Children.Element == Inline {
         self.init(newWithExtension: nil)
         self.urlString = urlString
         self.title = title
         self.children.append(contentsOf: children)
+    }
+
+    public convenience init(urlString: String, title: String = "", text string: String) {
+        self.init(urlString: urlString, title: title, children: [Text(literal: string)])
     }
 
     public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {

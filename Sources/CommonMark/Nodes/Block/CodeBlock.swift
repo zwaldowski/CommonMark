@@ -27,13 +27,13 @@ import cmark_gfm
 public final class CodeBlock: Block, Literal, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_CODE_BLOCK }
 
-    public convenience init() {
+    public convenience init(literal: String) {
         self.init(newWithExtension: nil)
+        self.literal = literal
     }
 
     public convenience init(literal: String, fenceInfo: String) {
-        self.init()
-        self.literal = literal
+        self.init(literal: literal)
         self.fenceInfo = fenceInfo
     }
 

@@ -79,9 +79,13 @@ public final class Table: Block, Container {
     override class var cmark_node_type: cmark_node_type { CMARK_NODE_TABLE }
     override class var cmark_syntax_extension: UnsafeMutablePointer<cmark_syntax_extension>? { SyntaxExtension.tables.cmark_syntax_extension }
 
-    public convenience init(columnAlignments: [ColumnAlignment?] = [], children: [Row] = []) {
+    public convenience init(columnAlignments: [ColumnAlignment?] = []) {
         self.init(newWithExtension: nil)
         self.columnAlignments = columnAlignments
+    }
+
+    public convenience init<Children>(columnAlignments: [ColumnAlignment?] = [], children: Children) where Children: Sequence, Children.Element == Row {
+        self.init(columnAlignments: columnAlignments)
         self.children.append(contentsOf: children)
     }
 

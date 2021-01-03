@@ -7,8 +7,9 @@ public final class Frontmatter: Block, Literal {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_CODE_BLOCK }
     override class var cmark_syntax_extension: UnsafeMutablePointer<cmark_syntax_extension>? { SyntaxExtension.frontmatter.cmark_syntax_extension }
 
-    public convenience init() {
+    public convenience init(literal: String) {
         self.init(newWithExtension: nil)
+        self.literal = literal
     }
 
     public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {

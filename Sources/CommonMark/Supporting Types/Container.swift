@@ -14,10 +14,3 @@ public extension Container {
         set {}
     }
 }
-
-public extension Container where Self: Basic {
-    init(children: [Child]) {
-        self.init()
-        self.children.append(contentsOf: children)
-    }
-}

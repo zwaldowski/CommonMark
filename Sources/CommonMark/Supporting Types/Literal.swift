@@ -1,18 +1,11 @@
 import cmark_gfm
 
 /// An element with literal contents.
-public protocol Literal: Basic {
+public protocol Literal: Node {
     init(literal: String)
 }
 
-// MARK: -
-
 public extension Literal {
-    init(literal: String) {
-        self.init()
-        self.literal = literal
-    }
-
     /// The literal contents of the element.
     var literal: String {
         get {
@@ -23,5 +16,12 @@ public extension Literal {
         set {
             cmark_node_set_literal(cmark_node, newValue)
         }
+    }
+}
+
+public extension Literal where Self: Container {
+    init<Children>(literal: String, children: Children) where Children: Sequence, Children.Element == Child {
+        self.init(literal: literal)
+        self.children.append(contentsOf: children)
     }
 }

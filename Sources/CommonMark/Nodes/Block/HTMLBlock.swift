@@ -13,14 +13,9 @@ import cmark_gfm
 public final class HTMLBlock: Block, Literal, InlineContainer {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_HTML_BLOCK }
 
-    public convenience init() {
+    public convenience init(literal: String) {
         self.init(newWithExtension: nil)
-    }
-
-    public convenience init(literal: String, children: [Inline]) {
-        self.init()
         self.literal = literal
-        self.children.append(contentsOf: children)
     }
 
     public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {

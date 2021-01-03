@@ -7,7 +7,7 @@ open class Block: Node {}
 public protocol BlockContainer: Container where Child == Block {}
 
 public extension BlockContainer where Self: Basic {
-    init(children: [Inline]) {
+    init<Children>(children: Children) where Children: Sequence, Children.Element == Inline {
         self.init(children: [ Paragraph(children: children) ])
     }
 }

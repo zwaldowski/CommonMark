@@ -49,13 +49,17 @@ public final class List: Block, Container {
             self.init(newWithExtension: nil)
         }
 
-        public convenience init(checked: Bool, children: [Block] = []) {
+        public convenience init(checked: Bool) {
             self.init(newWithExtension: .taskLists)
             self.checked = checked
+        }
+
+        public convenience init<Children>(checked: Bool, children: Children) where Children: Sequence, Children.Element == Block {
+            self.init(checked: checked)
             self.children.append(contentsOf: children)
         }
 
-        public convenience init(checked: Bool, children: [Inline]) {
+        public convenience init<Children>(checked: Bool, children: Children) where Children: Sequence, Children.Element == Inline {
             self.init(checked: checked, children: [Paragraph(children: children)])
         }
 
@@ -81,9 +85,13 @@ public final class List: Block, Container {
 
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_LIST }
 
-    public convenience init(delimiter: Delimiter = .none, children: [List.Item] = []) {
+    public convenience init(delimiter: Delimiter) {
         self.init(newWithExtension: nil)
         self.delimiter = delimiter
+    }
+
+    public convenience init<Children>(delimiter: Delimiter, children: Children) where Children: Sequence, Children.Element == Item {
+        self.init(delimiter: delimiter)
         self.children.append(contentsOf: children)
     }
 
