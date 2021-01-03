@@ -10,7 +10,7 @@ import cmark_gfm
 public final class Image: Inline {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_IMAGE }
 
-    public convenience init(urlString: String, title: String? = nil) {
+    public convenience init(urlString: String, title: String = "") {
         self.init(newWithExtension: nil)
         self.urlString = urlString
         self.title = title

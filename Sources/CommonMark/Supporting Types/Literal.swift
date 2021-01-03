@@ -7,16 +7,17 @@ public protocol Literal: Basic {
 
 // MARK: -
 
-extension Literal {
-    public init(literal: String) {
+public extension Literal {
+    init(literal: String) {
         self.init()
         self.literal = literal
     }
 
     /// The literal contents of the element.
-    public var literal: String? {
+    var literal: String {
         get {
-            return String(cString: cmark_node_get_literal(cmark_node))
+            guard let cString = cmark_node_get_literal(cmark_node) else { return "" }
+            return String(cString: cString)
         }
         
         set {

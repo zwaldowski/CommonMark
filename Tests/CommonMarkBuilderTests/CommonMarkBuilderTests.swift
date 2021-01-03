@@ -1,14 +1,13 @@
 import XCTest
 import CommonMark
 import CommonMarkBuilder
-//import enum CommonMarkTests.Fixtures
 
 final class CommonMarkBuilderTests: XCTestCase {
     func testCommonMarkBuilder() throws {
         let document = Document {
             Heading {
-                Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/" as String?,
-                     title: "View full version" as String?) {
+                Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/",
+                     title: "View full version") {
                     "Universal Declaration of Human Rights"
                 }
             }

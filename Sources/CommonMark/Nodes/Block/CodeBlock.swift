@@ -39,7 +39,8 @@ public final class CodeBlock: Block, Literal, InlineContainer {
 
     public var fenceInfo: String? {
         get {
-            return String(cString: cmark_node_get_fence_info(cmark_node))
+            guard let cString = cmark_node_get_fence_info(cmark_node) else { return nil }
+            return String(cString: cString)
         }
 
         set {

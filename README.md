@@ -83,8 +83,8 @@ import CommonMarkBuilder
 
 let document = Document {
     Heading {
-        Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/" as String?,
-                title: "View full version" as String?) // explicit type annotations to work around apparent compiler bug
+        Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/",
+                title: "View full version") // explicit type annotations to work around apparent compiler bug
         {
             "Universal Declaration of Human Rights"
         }

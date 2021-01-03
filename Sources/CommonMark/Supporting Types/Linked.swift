@@ -4,10 +4,11 @@ public protocol Linked: Node {}
 extension Link: Linked {}
 extension Image: Linked {}
 
-extension Linked {
-    public var urlString: String? {
+public extension Linked {
+    var urlString: String {
         get {
-            return String(cString: cmark_node_get_url(cmark_node))
+            guard let cString = cmark_node_get_url(cmark_node) else { return "" }
+            return String(cString: cString)
         }
 
         set {
@@ -15,9 +16,10 @@ extension Linked {
         }
     }
 
-    public var title: String? {
+    var title: String? {
         get {
-            return String(cString: cmark_node_get_title(cmark_node))
+            guard let cString = cmark_node_get_title(cmark_node) else { return nil }
+            return String(cString: cString)
         }
 
         set {
