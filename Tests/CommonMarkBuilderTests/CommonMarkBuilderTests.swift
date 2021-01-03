@@ -6,7 +6,7 @@ final class CommonMarkBuilderTests: XCTestCase {
     func testCommonMarkBuilder() throws {
         let document = Document {
             Heading {
-                Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/",
+                Link(destination: "https://www.un.org/en/universal-declaration-human-rights/",
                      title: "View full version") {
                     "Universal Declaration of Human Rights"
                 }

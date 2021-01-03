@@ -3,7 +3,7 @@ import CommonMark
 
 final class DocumentCreationTests: XCTestCase {
     func testDocumentCreation() throws {
-        let link = Link(urlString: "https://www.un.org/en/universal-declaration-human-rights/", title: "View full version", text: "Universal Declaration of Human Rights")
+        let link = Link(destination: "https://www.un.org/en/universal-declaration-human-rights/", title: "View full version", text: "Universal Declaration of Human Rights")
         let heading = Heading(level: 1, children: [link])
 
         let subheading = Heading(level: 2, text: "Article 1.")

@@ -13,7 +13,7 @@ final class DocumentParsingTests: XCTestCase {
         XCTAssertEqual(heading.parent, document)
 
         let link = try XCTUnwrap(heading.children.first as? Link)
-        XCTAssertEqual(link.urlString, "https://www.un.org/en/universal-declaration-human-rights/")
+        XCTAssertEqual(link.destination, "https://www.un.org/en/universal-declaration-human-rights/")
         XCTAssertEqual(link.title, "View full version")
         XCTAssertEqual(link.parent, heading)
 

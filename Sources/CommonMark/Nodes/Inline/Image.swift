@@ -10,9 +10,9 @@ import cmark_gfm
 public final class Image: Inline, Linked {
     override class var cmark_node_type: cmark_node_type { return CMARK_NODE_IMAGE }
 
-    public convenience init(urlString: String) {
+    public convenience init(destination: String) {
         self.init(newWithExtension: nil)
-        self.urlString = urlString
+        self.destination = destination
     }
 
     public override func accept<Visitor>(_ visitor: inout Visitor) -> Visitor.Result where Visitor: CommonMark.Visitor {

@@ -3,7 +3,8 @@ import cmark_gfm
 public protocol Linked: Node {}
 
 public extension Linked {
-    var urlString: String {
+    /// The URI that the link resolves to.
+    var destination: String {
         get {
             guard let cString = cmark_node_get_url(cmark_node) else { return "" }
             return String(cString: cString)
